@@ -5,7 +5,7 @@ if (isMobile) {
 
   navigator.geolocation.watchPosition(
     (position) => {
-      fetch("http://127.0.0.1:5000/update", {
+      fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -36,7 +36,7 @@ if (isMobile) {
 
   async function fetchPhoneLocation() {
     try {
-      const res = await fetch("http://127.0.0.1:5000/get-loc");
+      const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc");
       const text = await res.text();
 
       // Debug step: check what the backend returns
@@ -66,3 +66,4 @@ if (isMobile) {
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
