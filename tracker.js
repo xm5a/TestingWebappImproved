@@ -3,46 +3,51 @@ const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 if (isMobile) {
   document.getElementById("status").innerText = "Sending Location from Phone...";
 
-navigator.geolocation.watchPosition(
-  (position) => {
-    fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
-  method: "POST",
-  headers: {"Content-Type": "application/json"},
-  body: JSON.stringify({
-    lat: position.coords.latitude,
-    lon: position.coords.longitude,
-    timestamp: Date.now()
-  })
-});
-
-  },
-  (err) => {
-    document.getElementById("status").innerText = "Location error: " + err.message;
-  },
-  {
-    enableHighAccuracy: true,
-    maximumAge: 0,
-    timeout: 5000
-  }
-);
-
+  navigator.geolocation.watchPosition(
+    (position) => {
+      fetch("http://127.0.0.1:5000/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          timestamp: Date.now(),
+        }),
+      });
+    },
+    (err) => {
+      document.getElementById("status").innerText = "Location error: " + err.message;
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 5000,
+    }
+  );
 } else {
   const map = new maplibregl.Map({
-    style: 'https://tiles.openfreemap.org/styles/liberty',
-    center: [13.388, 52.517],
-    zoom: 9.5,
-    container: 'map',
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: [72.9831, 19.2073],
+    zoom: 14,
+    container: "map",
   });
 
   let phoneMarker = null;
 
   async function fetchPhoneLocation() {
     try {
-      const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc");
-      const data = await res.json();
+      const res = await fetch("http://127.0.0.1:5000/get-loc");
+      const text = await res.text();
+
+      // Debug step: check what the backend returns
+      console.log("Server response:", text);
+
+      const data = JSON.parse(text); // try parsing as JSON
       const { lat, lon } = data;
 
-      document.getElementById("status").innerText = `Phone at: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+      document.getElementById("status").innerText = `Phone at: ${lat.toFixed(
+        5
+      )}, ${lon.toFixed(5)}`;
 
       if (!phoneMarker) {
         phoneMarker = new maplibregl.Marker({ color: "blue" })
@@ -54,13 +59,10 @@ navigator.geolocation.watchPosition(
 
       map.setCenter([lon, lat]);
     } catch (err) {
-      document.getElementById("status").innerText = "Error";
-      console.error(err);
+      document.getElementById("status").innerText = "Error fetching location";
+      console.error("Fetch error:", err);
     }
   }
 
   setInterval(fetchPhoneLocation, 3000);
 }
-
-
-
