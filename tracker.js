@@ -3,27 +3,27 @@ const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 if (isMobile) {
   document.getElementById("status").innerText = "Sending Location from Phone...";
 
-  navigator.geolocation.watchPosition(
-    (position) => {
-      fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-          timestamp: Date.now()
-        })
-      });
-    },
-    (err) => {
-      document.getElementById("status").innerText = "Location error: " + err.message;
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 5000
-    }
-  );
+navigator.geolocation.watchPosition(
+  (position) => {
+    fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
+        timestamp: Date.now()
+      })
+    });
+  },
+  (err) => {
+    document.getElementById("status").innerText = "Location error: " + err.message;
+  },
+  {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 5000
+  }
+);
 
 } else {
   const map = new maplibregl.Map({
@@ -60,3 +60,4 @@ if (isMobile) {
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
