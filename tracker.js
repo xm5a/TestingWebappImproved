@@ -2,7 +2,7 @@
   if(isMobile){
 	  document.getElementById("status").innerText=" Sending Location from Phone...";
 	  navigator.geolocation.watchPosition((position) => {
-		  fetch("http://127.0.0.1:5000/update", method: "POST",
+		  fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", method: "POST",
 		  headers: {"Content-Type": "application/json"},
 		  body: JSON.stringify({
 			  lat:position.coords.latitude,
@@ -30,7 +30,7 @@
   
   async function fetchPhoneLocation(){
 	  try{
-		  const res = await fetch("http://127.0.0.1:5000/get-loc");
+		  const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc");
 		  const data = await res.json();
 		  const {lat,lon} = data;
 		  
@@ -53,4 +53,5 @@
 	  }
   }
 setInterval(fetchPhoneLocation,3000);
+
 }
