@@ -6,14 +6,15 @@ if (isMobile) {
 navigator.geolocation.watchPosition(
   (position) => {
     fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-        timestamp: Date.now()
-      })
-    });
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({
+    lat: position.coords.latitude,
+    lon: position.coords.longitude,
+    timestamp: Date.now()
+  })
+});
+
   },
   (err) => {
     document.getElementById("status").innerText = "Location error: " + err.message;
@@ -60,5 +61,6 @@ navigator.geolocation.watchPosition(
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
