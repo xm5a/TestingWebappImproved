@@ -76,6 +76,3 @@ async function fetchPhoneLocation() {
 }
   setInterval(fetchPhoneLocation, 3000);
   }
-
-
-
