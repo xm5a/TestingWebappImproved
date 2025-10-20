@@ -5,7 +5,7 @@ if (isMobile) {
 
   navigator.geolocation.watchPosition(
     (position) => {
-      fetch("hhttps://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/update", {
+      fetch("https://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -76,6 +76,7 @@ async function fetchPhoneLocation() {
 }
   setInterval(fetchPhoneLocation, 3000);
   }
+
 
 
 
