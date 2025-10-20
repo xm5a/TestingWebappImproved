@@ -5,7 +5,7 @@ if (isMobile) {
 
   navigator.geolocation.watchPosition(
     (position) => {
-      fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/update", {
+      fetch("https://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -36,7 +36,7 @@ if (isMobile) {
 
 async function fetchPhoneLocation() {
   try {
-    const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc", {
+    const res = await fetch("https://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/get-loc", {
       method: "GET",
       mode: "cors",
       headers: {
@@ -76,3 +76,4 @@ async function fetchPhoneLocation() {
 }
   setInterval(fetchPhoneLocation, 3000);
   }
+
