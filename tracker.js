@@ -34,36 +34,50 @@ if (isMobile) {
 
   let phoneMarker = null;
 
-  async function fetchPhoneLocation() {
-    try {
-      const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc");
-      const text = await res.text();
-
-      // Debug step: check what the backend returns
-      console.log("Server response:", text);
-
-      const data = JSON.parse(text); // try parsing as JSON
-      const { lat, lon } = data;
-
-      document.getElementById("status").innerText = `Phone at: ${lat.toFixed(
-        5
-      )}, ${lon.toFixed(5)}`;
-
-      if (!phoneMarker) {
-        phoneMarker = new maplibregl.Marker({ color: "blue" })
-          .setLngLat([lon, lat])
-          .addTo(map);
-      } else {
-        phoneMarker.setLngLat([lon, lat]);
+async function fetchPhoneLocation() {
+  try {
+    const res = await fetch("https://unpompous-thriftier-crosby.ngrok-free.dev/get-loc", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Accept": "application/json"
       }
+    });
 
-      map.setCenter([lon, lat]);
-    } catch (err) {
-      document.getElementById("status").innerText = "Error fetching location";
-      console.error("Fetch error:", err);
+    // Check if response type is JSON
+    const contentType = res.headers.get("content-type") || "";
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    let data;
+    if (contentType.includes("application/json")) {
+      data = await res.json(); // parse safely
+    } else {
+      const html = await res.text();
+      console.error("Server returned non-JSON data:", html.slice(0, 200));
+      throw new Error("Server returned HTML instead of JSON");
     }
+
+    const { lat, lon } = data;
+    document.getElementById("status").innerText = `Phone at: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+    if (!phoneMarker) {
+      phoneMarker = new maplibregl.Marker({ color: "blue" })
+        .setLngLat([lon, lat])
+        .addTo(map);
+    } else {
+      phoneMarker.setLngLat([lon, lat]);
+    }
+
+    map.setCenter([lon, lat]);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    document.getElementById("status").innerText = "Failed to fetch phone location.";
+  }
+}
+
   }
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
