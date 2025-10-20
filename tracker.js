@@ -74,10 +74,8 @@ async function fetchPhoneLocation() {
     document.getElementById("status").innerText = "Failed to fetch phone location.";
   }
 }
-
+  setInterval(fetchPhoneLocation, 3000);
   }
 
-  setInterval(fetchPhoneLocation, 3000);
-}
 
 
