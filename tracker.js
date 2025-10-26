@@ -12,7 +12,7 @@ if (isMobile) {
 
   navigator.geolocation.watchPosition(
     (position) => {
-      fetch("https://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/update", {
+      fetch("https://127.0.0.1:5000/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -44,7 +44,7 @@ if (isMobile) {
 
   async function fetchPhoneLocation() {
     try {
-      const res = await fetch("https://a7d64c80-f620-40d1-be03-4ed7af8374ae-00-6mjphf1eg2nq.kirk.replit.dev/get-loc");
+      const res = await fetch("https://127.0.0.1:5000/get-loc");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json(); // now array of phones
@@ -67,3 +67,4 @@ if (isMobile) {
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
