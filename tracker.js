@@ -36,8 +36,8 @@ if (isMobile) {
   const map = new maplibregl.Map({
     style: "https://tiles.openfreemap.org/styles/liberty",
     center: [72.9831, 19.2073],
-    pitch: 55.2,
-    bearing: -55.2,
+    pitch: 0,
+    bearing: 0,
     zoom: 14,
     container: "map",
   });
@@ -66,9 +66,13 @@ if (isMobile) {
       document.getElementById("status").innerText = "Failed to fetch phone location.";
     }
   }
-
+  function toggle3DView(){
+    map.setBearing(-55.2);
+    map.setPitch(55.2);
+  }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
