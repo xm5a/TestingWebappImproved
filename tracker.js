@@ -1,6 +1,16 @@
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-// Generate or reuse unique ID for this phone
+// Generate or reuse unique ID for this phone  
+let ThreeViewEnabled = false;
+function toggle3DView(){
+  if(!ThreeViewEnabled){
+    ThreeViewEnabled = true;
+  }
+  else{
+    ThreeViewEnabled = false;
+  }
+  ThreeViewport(ThreeViewEnabled);
+}
 let deviceId = localStorage.getItem("deviceId");
 if (!deviceId) {
   deviceId = "device-" + Math.random().toString(36).substr(2, 9);
@@ -66,12 +76,19 @@ if (isMobile) {
       document.getElementById("status").innerText = "Failed to fetch phone location.";
     }
   }
-  function toggle3DView(){
-    map.setBearing(-55.2);
-    map.setPitch(55.2);
+  function ThreeViewPort(ViewPortControl){
+    if(!ViewPortControl){
+      map.setPitch(0);
+      map.setBearing(0);
+    }
+    else{
+      map.setPitch(55.2);
+      map.setBearing(-55.2);
+    }
   }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
