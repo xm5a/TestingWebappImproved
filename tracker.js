@@ -36,8 +36,9 @@ if (isMobile) {
   const map = new maplibregl.Map({
     style: "https://tiles.openfreemap.org/styles/liberty",
     center: [72.9831, 19.2073],
+    pitch: 55.2,
+    bearing: -55.2,
     zoom: 14,
-    bearing: 55.2,
     container: "map",
   });
 
@@ -68,6 +69,7 @@ if (isMobile) {
 
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
