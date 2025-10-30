@@ -2,6 +2,27 @@ const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 // Generate or reuse unique ID for this phone  
 let ThreeViewEnabled = false;
+
+  const map = new maplibregl.Map({
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: [72.9831, 19.2073],
+    pitch: 0,
+    bearing: 0,
+    zoom: 14,
+    container: "map",
+  });
+
+ function ThreeViewPort(ViewPortControl){
+    if(!ViewPortControl){
+      map.setPitch(0);
+      map.setBearing(0);
+    }
+    else{
+      map.setPitch(55.2);
+      map.setBearing(-55.2);
+    }
+  }
+
 function toggle3DView(){
   if(!ThreeViewEnabled){
     ThreeViewEnabled = true;
@@ -43,14 +64,6 @@ if (isMobile) {
     }
   );
 } else {
-  const map = new maplibregl.Map({
-    style: "https://tiles.openfreemap.org/styles/liberty",
-    center: [72.9831, 19.2073],
-    pitch: 0,
-    bearing: 0,
-    zoom: 14,
-    container: "map",
-  });
 
   const phoneMarkers = {}; // 👈 store multiple markers
 
@@ -76,18 +89,9 @@ if (isMobile) {
       document.getElementById("status").innerText = "Failed to fetch phone location.";
     }
   }
-  function ThreeViewPort(ViewPortControl){
-    if(!ViewPortControl){
-      map.setPitch(0);
-      map.setBearing(0);
-    }
-    else{
-      map.setPitch(55.2);
-      map.setBearing(-55.2);
-    }
-  }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
