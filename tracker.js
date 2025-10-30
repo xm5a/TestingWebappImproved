@@ -12,7 +12,7 @@ let ThreeViewEnabled = false;
     container: "map",
   });
 
- function ThreeViewPort(ViewPortControl){
+ function ThreeViewport(ViewPortControl){
     if(!ViewPortControl){
       map.setPitch(0);
       map.setBearing(0);
@@ -91,6 +91,7 @@ if (isMobile) {
   }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
