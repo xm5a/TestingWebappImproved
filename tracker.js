@@ -23,13 +23,8 @@ let ThreeViewEnabled = false;
     }
   }
 
-function toggle3DView(){
-  if(!ThreeViewEnabled){
-    ThreeViewEnabled = true;
-  }
-  else{
-    ThreeViewEnabled = false;
-  }
+function m3dView(){
+  ThreeViewEnabled = !ThreeViewEnabled;
   ThreeViewport(ThreeViewEnabled);
 }
 let deviceId = localStorage.getItem("deviceId");
@@ -91,6 +86,7 @@ if (isMobile) {
   }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
