@@ -33,6 +33,67 @@ if (!deviceId) {
   localStorage.setItem("deviceId", deviceId);
 }
 
+
+
+
+
+function calculateDistance(lat1,lat2,lon1,lon2){
+				const R = 6371e3;
+				const toRad = deg => deg * Math.PI / 180;
+				const dLat = toRad(lat2-lat1);
+				const dLon = toRad(lon2-lon1);
+				const a = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) ** 2;
+				const c = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+				return R * c;
+			}
+
+function createGeoCircle(center, radius, points = 64){
+				const coords = [];
+				const earthRad = 6371e3;
+				const lat = center.lat * Math.PI / 180;
+				const lon = center.lng * Math.PI / 180;
+				
+				for (let i = 0; i <= points;  i++){
+					const angle = (i * 360 / points) * Math.PI / 180;
+					const dx = radius * Math.cos(angle);
+					const dy = radius * Math.sin(angle);
+					
+					const latOff = lat + (dy / earthRad);
+					const lonOff = lon + (dx / earthRad * Math.cos(lat));
+					
+					coords.push([
+					lonOff * 180 / Math.PI,
+					latOff * 180 / Math.PI
+				]);
+				}
+				
+				return {
+					type: "Feature",
+					geometry: {
+						type: "Polygon",
+						coordinates: [coords]
+					}
+				};
+			}
+			
+			const geofence = {
+				lat: 19.207385364043382,
+				lng: 72.98311549254477,
+				radius: 50
+			};
+			const geofenceCenter = {
+				lat: geofence.lat,
+				lng: geofence.lng,
+			};
+			
+			let distance = null;
+			let userLat = null;
+			let userLon = null;
+			let userMarker = null;
+
+
+
+
 if (isMobile) {
   document.getElementById("status").innerText = "Sending Location from Phone...";
 
@@ -49,6 +110,17 @@ if (isMobile) {
         }),
       });
     },
+
+distance = calculateDistance(lat,geofence.lat, lon, geofence.lng);
+					if(distance <= geofence.radius){
+						console.log("Inside");
+						document.getElementById("status").innerText = "Inside";
+					}
+					else{
+						console.log("Outside");
+						document.getElementById("status").innerText = "Outside";
+					}
+    
     (err) => {
       document.getElementById("status").innerText = "Location error: " + err.message;
     },
@@ -78,6 +150,17 @@ if (isMobile) {
         } else {
           phoneMarkers[id].setLngLat([lon, lat]);
         }
+
+distance = calculateDistance(lat,geofence.lat, lon, geofence.lng);
+					if(distance <= geofence.radius){
+						console.log("Inside");
+						document.getElementById("status").innerText = "Inside";
+					}
+					else{
+						console.log("Outside");
+						document.getElementById("status").innerText = "Outside";
+					}
+        
       });
     } catch (err) {
       console.error("Fetch error:", err);
@@ -86,6 +169,7 @@ if (isMobile) {
   }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
