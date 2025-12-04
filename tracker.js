@@ -111,7 +111,7 @@ if (isMobile) {
       });
     },
 
-distance = calculateDistance(lat,geofence.lat, lon, geofence.lng);
+distance = calculateDistance(lat,geofence.lat, lon, geofence.lng));
 					if(distance <= geofence.radius){
 						console.log("Inside");
 						document.getElementById("status").innerText = "Inside";
@@ -169,6 +169,7 @@ distance = calculateDistance(lat,geofence.lat, lon, geofence.lng);
   }
   setInterval(fetchPhoneLocation, 3000);
 }
+
 
 
 
